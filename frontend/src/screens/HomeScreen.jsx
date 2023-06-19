@@ -1,37 +1,31 @@
-import React from 'react'
-import {useEffect, useState} from 'react'
-import {Row, Col} from 'react-bootstrap'
-import Product from '../components/Product'
-import axios from 'axios'
-
+import React from "react";
+import { Row, Col } from "react-bootstrap";
+import Product from "../components/Product";
+import { useGetProductsQuery } from "../slices/productsApiSlice";
 
 const HomeScreen = () => {
-  const [products, setProducts] = useState([])
-
-  useEffect(() => {
-    const fetchProducts = async() =>{
-      const {data} = await axios.get('/api/products') // since we use 'proxy', we do not need to add 'http://localhost:5000'
-      setProducts(data)
-    }
-
-    fetchProducts()
-  }, []) // run once when the page loads
+  const { data: products, isLoading, error } = useGetProductsQuery(); // rename data to products
 
   return (
     <>
-        <h1>Latest Products</h1>
-        <Row>
-            {products.map((product)=>(
-                <Col key={product._id} sm={12} md={6} lg={4} xl={3}> 
-
-                    <Product  product={product}/>
-                
-                </Col>
-
+      {isLoading ? (
+        <h2>Loading...</h2>
+      ) : error ? (
+        <div>{error?.data?.message || error.error}</div>
+      ) : (
+        <>
+          <h1>Latest Products</h1>
+          <Row>
+            {products.map((product) => (
+              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                <Product product={product} />
+              </Col>
             ))}
-        </Row>
+          </Row>
+        </>
+      )}
     </>
-  )
-}
+  );
+};
 
-export default HomeScreen
+export default HomeScreen;
