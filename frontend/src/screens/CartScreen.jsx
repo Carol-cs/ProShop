@@ -12,7 +12,7 @@ import {
 } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import Message from "../components/Message";
-import { addToCart } from "../slices/cartSlice";
+import { addToCart, removeFromCart } from "../slices/cartSlice";
 
 const CartScreen = () => {
   const navigate = useNavigate();
@@ -23,6 +23,15 @@ const CartScreen = () => {
 
   const addToCartHandler = async (product, qty) => {
     dispatch(addToCart({ ...product, qty }));
+  };
+
+  const removeFromCartHandler = async (id) => {
+    dispatch(removeFromCart(id));
+  };
+
+  const checkoutHandler = () => {
+    navigate("/login?redirect=/shipping");
+    // if the user has loged in, redirect to shipping page
   };
 
   return (
@@ -66,7 +75,14 @@ const CartScreen = () => {
                     </Form.Control>
                   </Col>
                   <Col md={2}>
-                    <Button type="button" variant="light">
+                    <Button
+                      type="button"
+                      variant="light"
+                      onClick={() => {
+                        removeFromCartHandler(item._id);
+                      }}
+                    >
+                      {/* we need to add a function that calls removeFromCartHandler, otherwise it will be called right away and items are deleted*/}
                       <FaTrash />
                     </Button>
                   </Col>
@@ -94,6 +110,7 @@ const CartScreen = () => {
                 type="button className="
                 btn-block
                 disabled={cartItems.length === 0}
+                onClick={checkoutHandler}
               >
                 Proceed To Checkout
               </Button>
