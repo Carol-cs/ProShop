@@ -19,7 +19,7 @@ const cartSlice = createSlice({
       if (existItem) {
         state.cartItems = state.cartItems.map((x) =>
           x._id === existItem._id ? item : x
-        ); // ensures that the item in the cart with the matching _id is updated with the latest information
+        ); // ensures that the item in the cart with the matching _id is updated with the latest information (eg. qty)
       } else {
         state.cartItems = [...state.cartItems, item]; // we don't use .push(), because state is immutable
       }
