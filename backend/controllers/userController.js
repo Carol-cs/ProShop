@@ -1,5 +1,8 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import User from "../models/userModel.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 // @desc Auth user & get token
 // @route POST /api/users/login
@@ -7,7 +10,20 @@ import User from "../models/userModel.js";
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email: email }); // check if email exists
+
   if (user && (await user.matchPassword(password))) {
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "30d", // if ommited, the token will not expire
+    }); // create a token: jwt.sign(Payload, secret, jwtOptions )
+
+    // Set JWT as HTTP-Only Cookie
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development", // in production mode, we want this to be true
+      sameSite: "strict",
+      maxAge: 30 * 24 * 60 * 1000, // in milliseconds, 30 days
+    });
+
     res.json({
       _id: user._id,
       name: user.name,
