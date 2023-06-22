@@ -33,7 +33,6 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 
 userSchema.pre("save", async function (next) {
   // 'pre('save', ...)' allows us to do something before it is saved to database
-  console.log(this.isModified("password"));
   if (!this.isModified("password")) {
     // If the password field has not been modified, the function calls next() to move on to the next middleware.
     // this step is used to avoid re-hashing the password unnecessarily if no changes have been made to it.
