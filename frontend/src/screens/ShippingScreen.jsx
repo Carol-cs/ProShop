@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import FormContainer from "../components/FormContainer";
 import { saveShippingAddress } from "../slices/cartSlice";
+import CheckoutSteps from "../components/CheckoutSteps";
 
 const ShippingScreen = () => {
   // get shipping detail from state
@@ -30,6 +31,9 @@ const ShippingScreen = () => {
 
   return (
     <FormContainer>
+      {/* pass step1 and step2 in, step1 and step2 link will be enable, others will be disabled*/}
+      <CheckoutSteps step1 step2 />
+
       <h1>Shipping</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="address" className="my-2">

@@ -31,7 +31,7 @@ const cartSlice = createSlice({
 
     saveShippingAddress: (state, action) => {
       state.shipingAddress = action.payload;
-      return updateCart(state);
+      return updateCart(state); // update cart and store info in localstorage
     },
   },
 });
