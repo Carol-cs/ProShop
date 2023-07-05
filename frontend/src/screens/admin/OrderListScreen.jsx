@@ -1,3 +1,4 @@
+import React from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button } from "react-bootstrap";
 import { FaTimes } from "react-icons/fa";
@@ -14,11 +15,9 @@ const OrderListScreen = () => {
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <Message variant="danger">
-          {error?.data?.message || error.error}
-        </Message>
+        <Message variant="danger">{error}</Message>
       ) : (
-        <Table striped bordered hover responsive className="table-sm">
+        <Table striped hover responsive className="table-sm">
           <thead>
             <tr>
               <th>ID</th>
@@ -30,6 +29,7 @@ const OrderListScreen = () => {
               <th></th>
             </tr>
           </thead>
+
           <tbody>
             {orders.map((order) => (
               <tr key={order._id}>
