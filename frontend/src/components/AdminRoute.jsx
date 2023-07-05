@@ -1,0 +1,18 @@
+import React from "react";
+import { Outlet, Navigate } from "react-router-dom";
+// Outlet is what we want to return if we logged in
+// If we don't log in, we need Navigate to redirect us
+
+import { useSelector } from "react-redux";
+// so that we can get state to check if we have userInfo
+
+const AdminRoute = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+  return userInfo && userInfo.isAdmin ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/login" replace />
+  );
+};
+
+export default AdminRoute;
