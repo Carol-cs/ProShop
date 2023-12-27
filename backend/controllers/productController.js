@@ -8,8 +8,17 @@ const getProducts = asyncHandler(async (req, res) => {
   const pageSize = 2;
   const page = Number(req.query.pageNumber) || 1;
 
-  const count = await Product.countDocuments(); // mongoose method to count products
-  const products = await Product.find({})
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: "i", // case insensitive
+        },
+      }
+    : {};
+
+  const count = await Product.countDocuments({ ...keyword }); // mongoose method to count products
+  const products = await Product.find({ ...keyword })
     .limit(pageSize)
     .skip(pageSize * (page - 1)); // skip products on previous pages
   res.json({ products, page, pages: Math.ceil(count / pageSize) });
