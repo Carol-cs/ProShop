@@ -7,11 +7,13 @@ import {
   updateProduct,
   deleteProduct,
   createProductReview,
+  getTopProducts,
 } from "../controllers/productController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
 // '/' -> '/api/products/'
 router.route("/").get(getProducts).post(protect, admin, createProduct);
+router.get("/top", getTopProducts); // needs to put it above '/:id', otherwise top will be considered as an id
 router
   .route("/:id")
   .get(getProductById)
