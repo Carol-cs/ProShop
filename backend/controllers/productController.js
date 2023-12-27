@@ -5,8 +5,14 @@ import Product from "../models/productModel.js";
 // @route GET /api/products
 // @access Public
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({}); // pass empty object to get ALL products
-  res.json(products);
+  const pageSize = 2;
+  const page = Number(req.query.pageNumber) || 1;
+
+  const count = await Product.countDocuments(); // mongoose method to count products
+  const products = await Product.find({})
+    .limit(pageSize)
+    .skip(pageSize * (page - 1)); // skip products on previous pages
+  res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 
 // @desc Fetch single product
