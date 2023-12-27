@@ -30,7 +30,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["Products"], // stop from being cached so that we have fresh data
+      invalidatesTags: ["Product"], // stop from being cached so that we have fresh data
       // we don't need to refresh the page to create a new product
     }),
 
