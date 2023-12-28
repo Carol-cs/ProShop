@@ -63,7 +63,7 @@ const OrderScreen = () => {
     return actions.order.capture().then(async function (details) {
       // triggers Paypal with actions.order.capture(), which returns a promise
       try {
-        await payOrder({ orderId, details }); // we get details from PayPal
+        await payOrder({ orderId, details }).unwrap(); // we get details from PayPal
         refetch(); // once the order is paid, we want to refetch so that the browser showed that it is paid
         toast.success("Payment successful");
       } catch (err) {
