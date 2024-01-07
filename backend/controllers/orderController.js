@@ -17,6 +17,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
     // get the ordered items from our database
     const itemsFromDB = await Product.find({
       _id: { $in: orderItems.map((x) => x._id) },
+      // $in is an operator that checks if the value of the specified field (in this case, _id) matches any value in the provided array.
     });
 
     // map over the order items and use the price from our items from database
